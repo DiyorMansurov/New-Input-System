@@ -30,7 +30,9 @@ namespace Game.Scripts.UI
         private RawImage _droneCamView;
 
         [SerializeField]
-        private TextMeshProUGUI  _tutorialText;
+        private TextMeshProUGUI  _cameraTutorialText;
+        [SerializeField]
+        private TextMeshProUGUI  _droneTutorialText;
 
         private void Awake()
         {
@@ -45,7 +47,12 @@ namespace Game.Scripts.UI
 
         public void DisplayCameraTutorial(bool show)
         {
-            _tutorialText.gameObject.SetActive(show);
+            _cameraTutorialText.gameObject.SetActive(show);
+        }
+
+        public void DisplayDroneTutorial(bool show)
+        {
+            _droneTutorialText.gameObject.SetActive(show);
         }
 
         public void UpdateInventoryDisplay(Sprite icon)
