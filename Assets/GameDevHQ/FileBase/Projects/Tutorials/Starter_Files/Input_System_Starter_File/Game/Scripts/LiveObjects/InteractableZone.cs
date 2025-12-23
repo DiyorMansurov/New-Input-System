@@ -89,7 +89,7 @@ namespace Game.Scripts.LiveObjects
         {
             if (other.CompareTag("Player") && _currentZoneID > _requiredID)
             {
-                _input.Human.Interact.ApplyBindingOverride("<Keyboard>/" + _zoneKeyInput.ToString());
+                _input.Human.Interact.ApplyBindingOverride(0, "<Keyboard>/" + _zoneKeyInput.ToString());
 
                 switch (_zoneType)
                 {
