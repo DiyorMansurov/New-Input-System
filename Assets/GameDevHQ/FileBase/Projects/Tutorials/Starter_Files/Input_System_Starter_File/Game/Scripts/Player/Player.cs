@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Game.Scripts.LiveObjects;
 using Cinemachine;
+using Game.Scripts.UI;
 
 namespace Game.Scripts.Player
 {
@@ -30,6 +31,7 @@ namespace Game.Scripts.Player
             InteractableZone.onZoneInteractionComplete += InteractableZone_onZoneInteractionComplete;
             Laptop.onHackComplete += ReleasePlayerControl;
             Laptop.onHackEnded += ReturnPlayerControl;
+            Laptop.onHackEnded += HideCameraTutorial;
             Forklift.onDriveModeEntered += ReleasePlayerControl;
             Forklift.onDriveModeExited += ReturnPlayerControl;
             Forklift.onDriveModeEntered += HidePlayer;
@@ -130,6 +132,11 @@ namespace Game.Scripts.Player
             _followCam.Priority = 9;
         }
 
+        private void HideCameraTutorial()
+        {
+            UIManager.Instance.DisplayCameraTutorial(false);
+        }
+
         private void ReturnPlayerControl()
         {
             _model.SetActive(true);
@@ -152,6 +159,7 @@ namespace Game.Scripts.Player
             InteractableZone.onZoneInteractionComplete -= InteractableZone_onZoneInteractionComplete;
             Laptop.onHackComplete -= ReleasePlayerControl;
             Laptop.onHackEnded -= ReturnPlayerControl;
+            Laptop.onHackEnded += HideCameraTutorial;
             Forklift.onDriveModeEntered -= ReleasePlayerControl;
             Forklift.onDriveModeExited -= ReturnPlayerControl;
             Forklift.onDriveModeEntered -= HidePlayer;

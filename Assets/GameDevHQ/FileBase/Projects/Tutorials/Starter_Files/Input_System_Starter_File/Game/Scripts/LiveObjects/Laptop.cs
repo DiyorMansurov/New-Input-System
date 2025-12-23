@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Cinemachine;
+using UnityEngine.InputSystem;
+using Game.Scripts.UI;
 
 namespace Game.Scripts.LiveObjects
 {
@@ -23,38 +25,82 @@ namespace Game.Scripts.LiveObjects
         public static event Action onHackComplete;
         public static event Action onHackEnded;
 
+        private PlayerInputActions _input;
+
+        private void Awake() {
+            _input = new PlayerInputActions();
+        }
         private void OnEnable()
         {
             InteractableZone.onHoldStarted += InteractableZone_onHoldStarted;
             InteractableZone.onHoldEnded += InteractableZone_onHoldEnded;
+
+            _input.Cameras.Enable();
+            _input.Cameras.Change.performed += Change_performed;
+            _input.Cameras.Escape.performed += Escape_performed;
         }
 
-        private void Update()
+        public bool IsHacked()
+        {
+            return _hacked;
+        }
+
+// -------------------------------------------------------------------------
+//         private void Update()
+//         {
+//             if (_hacked == true)
+//             {
+//                 if (Input.GetKeyDown(KeyCode.E))
+//                 {
+//                     var previous = _activeCamera;
+//                     _activeCamera++;
+
+
+//                     if (_activeCamera >= _cameras.Length)
+//                         _activeCamera = 0;
+
+
+//                     _cameras[_activeCamera].Priority = 11;
+//                     _cameras[previous].Priority = 9;
+//                 }
+
+//                 if (Input.GetKeyDown(KeyCode.Escape))
+//                 {
+//                     _hacked = false;
+//                     onHackEnded?.Invoke();
+//                     ResetCameras();
+//                 }
+//             }
+//         }
+
+        private void Change_performed(InputAction.CallbackContext context)
         {
             if (_hacked == true)
             {
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    var previous = _activeCamera;
-                    _activeCamera++;
+                var previous = _activeCamera;
+                _activeCamera++;
 
 
-                    if (_activeCamera >= _cameras.Length)
-                        _activeCamera = 0;
+                if (_activeCamera >= _cameras.Length)
+                    _activeCamera = 0;
 
 
-                    _cameras[_activeCamera].Priority = 11;
-                    _cameras[previous].Priority = 9;
-                }
-
-                if (Input.GetKeyDown(KeyCode.Escape))
-                {
-                    _hacked = false;
-                    onHackEnded?.Invoke();
-                    ResetCameras();
-                }
+                _cameras[_activeCamera].Priority = 11;
+                _cameras[previous].Priority = 9;
             }
         }
+
+        private void Escape_performed(InputAction.CallbackContext context)
+        {
+            if (_hacked == true)
+            {
+                _hacked = false;
+                onHackEnded?.Invoke();
+                ResetCameras();
+            }
+        }
+
+// -------------------------------------------------------------------------
 
         void ResetCameras()
         {
@@ -71,7 +117,6 @@ namespace Game.Scripts.LiveObjects
                 _progressBar.gameObject.SetActive(true);
                 StartCoroutine(HackingRoutine());
                 onHackComplete?.Invoke();
-                Debug.Log("Hack started");
             }
         }
 
@@ -86,7 +131,6 @@ namespace Game.Scripts.LiveObjects
                 _progressBar.gameObject.SetActive(false);
                 _progressBar.value = 0;
                 onHackEnded?.Invoke();
-                Debug.Log("Hack ended");
             }
         }
 
@@ -108,12 +152,17 @@ namespace Game.Scripts.LiveObjects
 
             //enable Vcam1
             _cameras[0].Priority = 11;
+            UIManager.Instance.DisplayCameraTutorial(true);
         }
         
         private void OnDisable()
         {
             InteractableZone.onHoldStarted -= InteractableZone_onHoldStarted;
             InteractableZone.onHoldEnded -= InteractableZone_onHoldEnded;
+
+            _input.Cameras.Disable();
+            _input.Cameras.Change.performed -= Change_performed;
+            _input.Cameras.Escape.performed -= Escape_performed;
         }
     }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Game.Scripts.UI
 {
@@ -28,6 +29,9 @@ namespace Game.Scripts.UI
         [SerializeField]
         private RawImage _droneCamView;
 
+        [SerializeField]
+        private TextMeshProUGUI  _tutorialText;
+
         private void Awake()
         {
             _instance = this;
@@ -37,6 +41,11 @@ namespace Game.Scripts.UI
         {
             _interactableZone.text = message;
             _interactableZone.gameObject.SetActive(showMessage);
+        }
+
+        public void DisplayCameraTutorial(bool show)
+        {
+            _tutorialText.gameObject.SetActive(show);
         }
 
         public void UpdateInventoryDisplay(Sprite icon)
