@@ -36,6 +36,11 @@ namespace Game.Scripts.UI
         [SerializeField]
         private TextMeshProUGUI  _forkliftTutorialText;
 
+         [SerializeField]
+        private TextMeshProUGUI  _crateTutorialText;
+        [SerializeField]
+        private Slider  _crateBreakSlider;
+
         private void Awake()
         {
             _instance = this;
@@ -55,6 +60,21 @@ namespace Game.Scripts.UI
         public void DisplayForkliftTutorial(bool show)
         {
             _forkliftTutorialText.gameObject.SetActive(show);
+        }
+
+        public void DisplayCrateBreakSlider(bool show)
+        {
+            _crateBreakSlider.gameObject.SetActive(show);
+        }
+
+        public void DisplayCrateTutorial(bool show)
+        {
+            _crateTutorialText.gameObject.SetActive(show);
+        }
+
+        public void UpdateCrateBreakSlider(float value)
+        {
+            _crateBreakSlider.value = Mathf.Clamp01(value);
         }
 
         public void DisplayDroneTutorial(bool show)
