@@ -33,6 +33,8 @@ namespace Game.Scripts.UI
         private TextMeshProUGUI  _cameraTutorialText;
         [SerializeField]
         private TextMeshProUGUI  _droneTutorialText;
+        [SerializeField]
+        private TextMeshProUGUI  _forkliftTutorialText;
 
         private void Awake()
         {
@@ -48,6 +50,11 @@ namespace Game.Scripts.UI
         public void DisplayCameraTutorial(bool show)
         {
             _cameraTutorialText.gameObject.SetActive(show);
+        }
+
+        public void DisplayForkliftTutorial(bool show)
+        {
+            _forkliftTutorialText.gameObject.SetActive(show);
         }
 
         public void DisplayDroneTutorial(bool show)
